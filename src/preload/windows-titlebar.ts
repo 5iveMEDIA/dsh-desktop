@@ -10,8 +10,17 @@ interface TitlebarLayoutMountOptions {
   ipcRenderer: Pick<IpcRenderer, 'invoke'>
 }
 
+/** Harness reads this marker while creating its first layout frame. */
+export function markWindowsTitlebar(document: Document): void {
+  const root = document.documentElement
+  if (!root) return
+  root.dataset.windowsTitlebar = ''
+  root.style.setProperty('--dsh-windows-titlebar-height', `${WINDOWS_TITLEBAR_HEIGHT}px`)
+}
+
 export function mountWindowsTitlebarLayout(options: TitlebarLayoutMountOptions): void {
   const { document, ipcRenderer } = options
+  markWindowsTitlebar(document)
   if (!document.body) return
 
   installLayout(document)
@@ -60,19 +69,10 @@ function installLayout(document: Document): void {
     body.dsh-desktop-windows-titlebar-layout [data-dsh-sidebar-root][data-dsh-sidebar-wide="true"] {
       padding-top: 6px !important;
     }
-    body.dsh-desktop-windows-titlebar-layout [data-sidebar-right-panel],
-    body.dsh-desktop-windows-titlebar-layout [data-sidebar-right-panel="fullscreen"],
-    body.dsh-desktop-windows-titlebar-layout [data-rightbar-col] > div,
-    body.dsh-desktop-windows-titlebar-layout [data-side="rightbar"] {
-      top: var(--dsh-titlebar-safe-inset-top, 36px) !important;
-      height: calc(100% - var(--dsh-titlebar-safe-inset-top, 36px)) !important;
-    }
-    /* rc.2 owns the header outside the session slot. Keep all header
-       contributions in normal flow below the native caption/menu strip. */
-    body.dsh-desktop-windows-titlebar-layout [data-dsh-conversation-header] {
-      min-height: 76px !important;
-      padding-top: calc(var(--dsh-titlebar-safe-inset-top, 36px) + 6px) !important;
-      box-sizing: border-box !important;
+    /* Harness now reserves the caption row in AppFrame. Keep its drag area
+       clear of the native controls and our separate application menu view. */
+    html[data-windows-titlebar] :has(> [data-shell-overlay])::before {
+      right: calc(var(${CAPTION_WIDTH_PROPERTY}, 140px) + 44px);
     }
     body.dsh-desktop-windows-titlebar-layout button,
     body.dsh-desktop-windows-titlebar-layout a,
