@@ -63,11 +63,15 @@ function installLayout(document: Document): void {
       min-height: 0 !important;
     }
     :root {
-      --dsh-titlebar-safe-inset-top: max(36px, env(titlebar-area-height, 36px));
+      --dsh-titlebar-safe-inset-top: max(${WINDOWS_TITLEBAR_HEIGHT}px, env(titlebar-area-height, ${WINDOWS_TITLEBAR_HEIGHT}px));
       --dsh-titlebar-safe-inset-right: calc(var(${CAPTION_WIDTH_PROPERTY}, 140px) + 44px);
     }
-    body.dsh-desktop-windows-titlebar-layout [data-dsh-sidebar-root][data-dsh-sidebar-wide="true"] {
-      padding-top: 6px !important;
+    /* The sidebar patch pads the expanded sidebar for non-macOS captions.
+       With the Windows marker, Harness already starts every column below the
+       caption row, so any extra padding pushes the brand and New Session
+       below where upstream places them. */
+    html[data-windows-titlebar] [data-dsh-sidebar-root][data-dsh-sidebar-wide="true"] {
+      padding-top: 0 !important;
     }
     /* Harness now reserves the caption row in AppFrame. Keep its drag area
        clear of the native controls and our separate application menu view. */
@@ -91,7 +95,7 @@ function installLayout(document: Document): void {
       top: 0;
       left: 0;
       right: calc(var(${CAPTION_WIDTH_PROPERTY}, 140px) + 44px);
-      height: 36px;
+      height: ${WINDOWS_TITLEBAR_HEIGHT}px;
       background: transparent;
       pointer-events: none;
       user-select: none;
@@ -108,8 +112,8 @@ function installDragRegion(document: Document): void {
   dragRegion.setAttribute('aria-hidden', 'true')
   document.body.appendChild(dragRegion)
 
-  // The native drag region still wins over a modal's buttons in the top
-  // 36px, so hide it while a real dialog is open. Only semantic dialog
+  // The native drag region still wins over a modal's buttons in the caption
+  // row, so hide it while a real dialog is open. Only semantic dialog
   // markers count: class-name guesses match permanent elements and would
   // hide the region for good.
   const modalSelector = 'dialog[open], [role="dialog"], [role="alertdialog"], [aria-modal="true"]'

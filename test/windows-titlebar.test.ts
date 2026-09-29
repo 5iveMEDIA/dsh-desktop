@@ -31,7 +31,7 @@ describe('Windows titlebar menu', () => {
 
     const closedAt100Percent = windowsMenuViewBounds({ width: 1380, height: 900 }, false)
     const closedAt69Percent = windowsMenuViewBounds({ width: 1380, height: 900 }, false)
-    expect(closedAt100Percent).toEqual({ x: 1196, y: 0, width: 44, height: 36 })
+    expect(closedAt100Percent).toEqual({ x: 1196, y: 0, width: 44, height: WINDOWS_TITLEBAR_HEIGHT })
     expect(closedAt69Percent).toEqual(closedAt100Percent)
 
     expect(windowsMenuViewBounds({ width: 1380, height: 900 }, true)).toEqual({
@@ -44,7 +44,7 @@ describe('Windows titlebar menu', () => {
       x: 856,
       y: 0,
       width: 44,
-      height: 36
+      height: WINDOWS_TITLEBAR_HEIGHT
     })
   })
 })

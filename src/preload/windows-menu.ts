@@ -229,10 +229,10 @@ const menuStyles = `
   html, body { width:100%; height:100%; margin:0; overflow:hidden; background:transparent; }
   body { color:var(--label-primary); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; user-select:none; }
   .bar { position:relative; width:100%; height:100%; display:flex; justify-content:flex-end; align-items:flex-start; }
-  .menuButton { appearance:none; flex:none; width:44px; height:36px; display:grid; place-items:center; padding:0; color:var(--label-secondary); background:transparent; border:0; cursor:pointer; }
+  .menuButton { appearance:none; flex:none; width:44px; height:100%; display:grid; place-items:center; padding:0; color:var(--label-secondary); background:transparent; border:0; cursor:pointer; }
   .menuButton:hover, .menuButton.isOpen { color:var(--label-primary); background:var(--hover); }
   .menuButton:focus-visible { outline:2px solid #4d6bfe; outline-offset:-3px; }
-  .menu { position:absolute; top:43px; right:0; width:304px; max-height:calc(100vh - 56px); overflow:auto; padding:7px; color:var(--label-primary); background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:0 14px 36px rgba(0,0,0,.2); scrollbar-width:thin; }
+  .menu { position:absolute; top:47px; right:0; width:304px; max-height:calc(100vh - 56px); overflow:auto; padding:7px; color:var(--label-primary); background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:0 14px 36px rgba(0,0,0,.2); scrollbar-width:thin; }
   .menu[hidden] { display:none; }
   .sectionLabel { padding:7px 10px 4px; color:var(--label-tertiary); font-size:10px; font-weight:600; line-height:14px; letter-spacing:.08em; text-transform:uppercase; }
   .item { appearance:none; width:100%; min-height:33px; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:6px 10px; color:inherit; background:transparent; border:0; border-radius:7px; font:inherit; font-size:13px; line-height:20px; text-align:left; cursor:pointer; }
