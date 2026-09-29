@@ -22,7 +22,7 @@ ipcMain.on('dsh:storage-load-sync', event => { event.returnValue = {} })
 ipcMain.on('dsh:storage-sync', () => {})
 ipcMain.handle('updates:status', () => ({ phase: 'idle', currentVersion: '0.0.0', manual: false }))
 ipcMain.handle('mobile:status', () => ({ connected: false }))
-ipcMain.handle('desktop-titlebar:close-menu', () => {})
+ipcMain.handle('desktop-titlebar:popup-menu', () => {})
 ipcMain.handle('desktop-titlebar:set-theme', () => {})
 
 async function capture(contents: Electron.WebContents, path: string): Promise<void> {
@@ -220,7 +220,6 @@ async function main(): Promise<void> {
   parent.destroy(); await delay(60)
   assert.equal(lateFrame.isDestroyed(), true)
   assert.equal(closed, 2)
-  if (!menu.webContents.isDestroyed()) menu.webContents.close()
   writeFileSync(join(output, 'results.json'), JSON.stringify({ platform: process.platform, arch: process.arch, scale, results, closed }, null, 2))
   console.log(JSON.stringify({ platform: process.platform, scale, variants: results.length, status: 'passed' }))
 }
