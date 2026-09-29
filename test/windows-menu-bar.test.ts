@@ -62,3 +62,14 @@ it('mounts only once per document', () => {
   expect(document.querySelectorAll('[data-dsh-windows-menu]')).toHaveLength(1)
   first.dispose()
 })
+
+it('marks <html> as soon as the parser creates it when preload runs first', async () => {
+  const { markWindowsTitlebar } = await import('../src/preload/windows-titlebar')
+  const doc = document.implementation.createDocument(null, null)
+  markWindowsTitlebar(doc)
+  const html = doc.createElementNS('http://www.w3.org/1999/xhtml', 'html') as HTMLElement
+  doc.append(html)
+  await flush()
+  expect(html.hasAttribute('data-windows-titlebar')).toBe(true)
+  expect(html.style.getPropertyValue('--dsh-windows-titlebar-height')).toBe('40px')
+})

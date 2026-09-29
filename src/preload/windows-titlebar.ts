@@ -13,10 +13,24 @@ interface TitlebarLayoutMountOptions {
 
 /** Harness reads this marker while creating its first layout frame. */
 export function markWindowsTitlebar(document: Document): void {
-  const root = document.documentElement
-  if (!root) return
-  root.dataset.windowsTitlebar = ''
-  root.style.setProperty('--dsh-windows-titlebar-height', `${WINDOWS_TITLEBAR_HEIGHT}px`)
+  const apply = (root: HTMLElement): void => {
+    root.dataset.windowsTitlebar = ''
+    root.style.setProperty('--dsh-windows-titlebar-height', `${WINDOWS_TITLEBAR_HEIGHT}px`)
+  }
+  const root = document.documentElement as HTMLElement | null
+  if (root) {
+    apply(root)
+    return
+  }
+  // Preload can run before the parser creates <html>. Mark it the moment it
+  // exists so every Harness script, including its first layout, sees it.
+  const observer = new MutationObserver(() => {
+    const created = document.documentElement as HTMLElement | null
+    if (!created) return
+    observer.disconnect()
+    apply(created)
+  })
+  observer.observe(document, { childList: true })
 }
 
 /**
