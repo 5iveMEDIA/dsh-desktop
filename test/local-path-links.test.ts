@@ -151,7 +151,9 @@ describe('assistant local path links', () => {
       'ftp://host/report.txt',
       'ws://host/socket.js',
       'npm install',
-      ''
+      'someFunction',
+      '',
+      '   '
     ]) {
       expect(localPathReference(value), value).toBeUndefined()
     }
@@ -163,6 +165,10 @@ describe('assistant local path links', () => {
     expect(localPathReference('./@scope/pkg')).toEqual({ path: './@scope/pkg', kind: 'folder' })
     expect(localPathReference('/tmp/@scope/pkg/index.js')).toEqual({
       path: '/tmp/@scope/pkg/index.js',
+      kind: 'file'
+    })
+    expect(localPathReference('patches/@deepseek-ai+dsh-client-ui-deliverables+0.1.6-alpha.2.patch')).toEqual({
+      path: 'patches/@deepseek-ai+dsh-client-ui-deliverables+0.1.6-alpha.2.patch',
       kind: 'file'
     })
     expect(localPathReference('patches/@deepseek-ai+dsh-client-ui-deliverables+0.1.5-rc.2.patch')).toEqual({

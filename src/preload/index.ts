@@ -586,7 +586,6 @@ contextBridge.exposeInMainWorld(
   })
 )
 
-
 function mount(): void {
   if (document.getElementById(ROOT_ID)) return
 
