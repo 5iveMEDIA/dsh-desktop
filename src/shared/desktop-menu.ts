@@ -9,7 +9,6 @@ export const desktopMenuCommands = [
   'safe-mode',
   'show-harness-log',
   'check-for-updates',
-  'export-session',
   'undo',
   'redo',
   'cut',

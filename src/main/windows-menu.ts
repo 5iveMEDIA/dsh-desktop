@@ -85,7 +85,6 @@ export function windowsMenuTemplate(
     command('restart-harness', '重启', 'Restart', 'Ctrl+Shift+R'),
     command('safe-mode', '以安全模式重启…', 'Restart as Safe Mode…'),
     command('show-harness-log', '显示 Harness 日志', 'Show Harness Log'),
-    command('export-session', '导出 Session 日志…', 'Export Session Log…'),
     { type: 'separator' },
     {
       label: zh ? '视图' : 'View',
