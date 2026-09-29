@@ -82,7 +82,7 @@ export function windowsMenuTemplate(
 
   return [
     command('connect-phone', '连接手机…', 'Connect Phone…', 'Ctrl+Shift+M'),
-    command('restart-harness', '重启 Harness', 'Restart Harness', 'Ctrl+Shift+R'),
+    command('restart-harness', '重启', 'Restart', 'Ctrl+Shift+R'),
     command('safe-mode', '以安全模式重启…', 'Restart as Safe Mode…'),
     command('show-harness-log', '显示 Harness 日志', 'Show Harness Log'),
     command('export-session', '导出 Session 日志…', 'Export Session Log…'),

@@ -3111,7 +3111,7 @@ function installMenu(): void {
         },
         { type: 'separator' },
         {
-          label: isChinese ? '重启 Harness' : 'Restart Harness',
+          label: isChinese ? '重启' : 'Restart',
           accelerator: 'CmdOrCtrl+Shift+R',
           click: () => void restartHarness().catch(showUnexpectedError)
         },
