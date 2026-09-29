@@ -314,6 +314,9 @@ jobs:
       - name: Verify PPT generation leaves tracked sources clean
         run: git diff --exit-code -- packages/ppt-runtime scripts/ppt
       - run: npm run typecheck
+      - name: Boot Harness through Electron Node mode on Windows
+        run: node scripts/probe-electron-node-runtime.mjs
+        timeout-minutes: 5
       - name: Check recovery UI on native Windows at three display scales
         run: node scripts/check-recovery-ui.mjs
       - uses: actions/upload-artifact@v4
