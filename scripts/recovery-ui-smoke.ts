@@ -1,11 +1,11 @@
-import { app, BrowserWindow, WebContentsView, ipcMain, shell, desktopCapturer } from 'electron'
+import { app, BrowserWindow, ipcMain, shell, desktopCapturer } from 'electron'
 import { strict as assert } from 'node:assert'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { SAFE_MODE_FRAME_CHANNEL, SAFE_MODE_FRAME_UPDATE_CHANNEL, SafeModeFrame } from '../src/main/safe-mode-frame'
 import { buildSafeModeViewModel } from '../src/main/safe-mode'
 import { buildPluginRecoveryViewModel } from '../src/main/plugin-recovery-view'
-import { windowsMenuViewBounds } from '../src/main/windows-menu-view'
+import { WINDOWS_TITLEBAR_HEIGHT } from '../src/shared/desktop-menu'
 import { secureWindow } from '../src/main/security'
 
 const scale = process.env.RECOVERY_UI_SCALE || '1'
@@ -44,7 +44,7 @@ async function main(): Promise<void> {
     show: true, frame: process.platform !== 'darwin',
     ...(process.platform === 'win32' ? {
       titleBarStyle: 'hidden' as const,
-      titleBarOverlay: { color: '#00000000', symbolColor: '#fafafa', height: 36 },
+      titleBarOverlay: { color: '#00000000', symbolColor: '#fafafa', height: WINDOWS_TITLEBAR_HEIGHT },
       autoHideMenuBar: true
     } : {}),
     backgroundColor: '#18181b',
@@ -52,9 +52,6 @@ async function main(): Promise<void> {
   })
   parent.setMenuBarVisibility(false)
   secureWindow(parent)
-  const menu = new WebContentsView({ webPreferences: { sandbox: true } })
-  menu.setBackgroundColor('#00000000')
-  if (process.platform === 'win32') parent.contentView.addChildView(menu)
   const names = ['calendar-plugin', 'search-plugin', 'notes-plugin', '@community/billing-plugin', '@community/longer-agent-memory-plugin', 'mobile-plugin']
   let closed = 0
   for (const scenario of ['safe-mode', 'plugin-recovery', 'multiple-plugins', 'market-offline', 'unidentified-plugin']) {
@@ -69,8 +66,7 @@ async function main(): Promise<void> {
     for (const locale of ['zh', 'en'] as const) for (const theme of ['light', 'dark']) for (const [width, height] of [[1280,800], [900,640]]) {
       parent.setSize(width!, height!)
       if (process.platform === 'win32') {
-        parent.setTitleBarOverlay({ color: '#00000000', symbolColor: theme === 'dark' ? '#fafafa' : '#18181b', height: 36 })
-        menu.setBounds(windowsMenuViewBounds({ width: width!, height: height! }, false))
+        parent.setTitleBarOverlay({ color: '#00000000', symbolColor: theme === 'dark' ? '#fafafa' : '#18181b', height: WINDOWS_TITLEBAR_HEIGHT })
       }
       const model = page === 'safe-mode' ? buildSafeModeViewModel({ locale, plugins: names }) : buildPluginRecoveryViewModel({
         locale, plugins: scenario === 'unidentified-plugin' ? [] : (scenario === 'multiple-plugins' || scenario === 'market-offline') ? names.slice(0, 3) : [names[0]!], removedPlugins: [],
