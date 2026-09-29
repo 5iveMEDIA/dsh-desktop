@@ -220,7 +220,6 @@ async function main(): Promise<void> {
   parent.destroy(); await delay(60)
   assert.equal(lateFrame.isDestroyed(), true)
   assert.equal(closed, 2)
-  if (!menu.webContents.isDestroyed()) menu.webContents.close()
   writeFileSync(join(output, 'results.json'), JSON.stringify({ platform: process.platform, arch: process.arch, scale, results, closed }, null, 2))
   console.log(JSON.stringify({ platform: process.platform, scale, variants: results.length, status: 'passed' }))
 }
